@@ -20,6 +20,7 @@
     highscoresScene = null, 
     body = [],
     food = null, 
+    foodTwo = null,
     highscores = [], 
     posHighscore = 10, 
     dir = 0,
@@ -27,6 +28,7 @@
     //wall = [],
     iBody = new Image(), 
     iFood = new Image(), 
+    iFoodTwo = new Image(),
     aEat = new Audio(), 
     aDie = new Audio(); 
 
@@ -132,17 +134,19 @@
 
     function init() { 
         // Get canvas and context 
-        canvas = document.getElementById('canvas'); 
-        ctx = canvas.getContext('2d'); 
+        canvas = document.getElementById("canvas"); 
+        ctx = canvas.getContext("2d"); 
 
         // Load assets 
-        iBody.src = 'images/body.png'; 
-        iFood.src = 'images/fruit.png'; 
-        aEat.src = 'sounds/chomp.oga'; 
-        aDie.src = 'sounds/dies.oga'; 
+        iBody.src = "images/body.png"; 
+        iFood.src = "images/fruit.png"; 
+        iFoodTwo.src = "images/fruitTwo.png";
+        aEat.src = "sounds/chomp.oga"; 
+        aDie.src = "sounds/dies.oga"; 
 
         // Create food 
         food = new Rectangle(80, 80, 10, 10);
+        foodTwo = new Rectangle(80, 80, 10, 10);
 
         // Create walls 
         //wall.push(new Rectangle(50, 50, 10, 10)); 
@@ -223,6 +227,9 @@
         ctx.strokeStyle = "#f00"; 
         food.drawImage(ctx, iFood); 
 
+        ctx.strokeStyle = "#f00"; 
+        foodTwo.drawImage(ctx, iFoodTwo); 
+
         // Draw score 
         ctx.fillStyle = "#fff"; 
         ctx.textAlign = "left"; 
@@ -233,11 +240,11 @@
 
         // Draw pause 
         if (pause) { 
-            ctx.textAlign = 'center'; 
+            ctx.textAlign = "center"; 
             if (gameover) { 
-                ctx.fillText('GAME OVER', 150, 75); 
+                ctx.fillText("GAME OVER", 150, 75); 
             } else { 
-                ctx.fillText('PAUSE', 150, 75); 
+                ctx.fillText("PAUSE", 150, 75); 
             } 
         } 
     }; 
@@ -306,6 +313,17 @@
                 food.x = random(canvas.width / 10 - 1) * 10;  
                 food.y = random(canvas.height / 10 - 1) * 10; 
                 aEat.play(); 
+            }
+
+            if (body[0].intersects(foodTwo)) {  
+                body.push(new Rectangle(0, 0, 10, 10)); 
+                score += 100; 
+                food.x = random(canvas.width / 10 - 1) * 10;  
+                food.y = random(canvas.height / 10 - 1) * 10; 
+                aEat.play(); 
+                fetch("http://jsonplaceholder.com?score=100")
+                .then(() => console.log("Score has been sent"))
+                .catch(() => console.log("Something went wrong"))
             }
 
             // Wall Intersects 
