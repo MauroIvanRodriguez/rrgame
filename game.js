@@ -316,14 +316,22 @@
             }
 
             if (body[0].intersects(foodTwo)) {  
-                body.push(new Rectangle(0, 0, 10, 10)); 
                 score += 100; 
-                food.x = random(canvas.width / 10 - 1) * 10;  
-                food.y = random(canvas.height / 10 - 1) * 10; 
-                aEat.play(); 
+                foodTwo.x = random(canvas.width / 10 - 1) * 10;  
+                foodTwo.y = random(canvas.height / 10 - 1) * 10; 
+                aEat.play();
+
                 fetch("http://jsonplaceholder.com?score=100")
-                .then(() => console.log("Score has been sent"))
-                .catch(() => console.log("Something went wrong"))
+                .then (function (response){
+                    return response.json ();
+                })
+                .then (function (json) {
+                    return console.log ("Score has been sent");
+                })
+                .catch (function (error){
+                    return console.log ("Something went wrong");
+                });
+
             }
 
             // Wall Intersects 
